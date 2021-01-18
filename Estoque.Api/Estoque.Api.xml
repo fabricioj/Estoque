@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Estoque.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Estoque.Api.Controllers.CategoriaController.BuscarPorId(System.Int32)">
+             <summary>
+             Buscar categoria por ID.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /Categoria/1
+            
+             </remarks>
+             <param name="id"></param>
+             <returns>Retorna em "dados" a categoria solicitada</returns>
+             <response code="200">Retorna a categoria solicitada</response>
+             <response code="400">Se nenhuma categoria for encontrada</response> 
+        </member>
+        <member name="M:Estoque.Api.Controllers.CategoriaController.Buscar(System.String)">
+             <summary>
+             Buscar por pesquisa.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /Categoria/?pesquisa=CAMA
+            
+             </remarks>
+             <param name="pesquisa"></param>
+             <returns>Retorna em "dados" uma lista das categorias encontradas conforme o filtro informado (ou todas as categorias se não for informado), seja no código ou descrição.</returns>
+             <response code="200">Retornar a lista das categorias solicitadas</response>
+        </member>
+        <member name="M:Estoque.Api.Controllers.CategoriaController.Inserir(Estoque.Api.Models.CategoriaView)">
+             <summary>
+             Inserir categoria.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /Categoria/
+                 {
+                    "descricao": "SALA DE ESTAR",
+                    "status": "ativo"
+                 }
+                 
+             </remarks>
+             <param name="categoriaView"></param>
+             <returns>Retorna em "dados" a categoria inserida.</returns>
+             <response code="200">Retorna a categoria inserida</response>
+             <response code="400">Se a categoria não for informada ou se houver algum erro de validação</response>
+        </member>
+        <member name="M:Estoque.Api.Controllers.CategoriaController.Alterar(System.Int32,Estoque.Api.Models.CategoriaView)">
+             <summary>
+             Alterar categoria.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 PUT /Categoria/1
+                 {
+                    "descricao": "SALA DE ESTAR ALTERADA",
+                    "status": "ativo"
+                 }
+                 
+             </remarks>
+             <param name="id"></param>
+             <param name="categoriaView"></param>
+             <returns>Retorna em "dados" a categoria alterada.</returns>
+             <response code="200">Retorna a categoria alterada</response>
+             <response code="400">Se o id da categoria não for informado, se ela não for encontrada ou se houver algum erro de validação</response>
+        </member>
+        <member name="M:Estoque.Api.Controllers.CategoriaController.Excluir(System.Int32)">
+             <summary>
+             Excluir categoria.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 DELETE /Categoria/1
+                 
+             </remarks>
+             <param name="id"></param>
+             <returns>Retorna em "dados" a categoria excluída.</returns>
+             <response code="200">Retorna a categoria excluída</response>
+             <response code="400">Se o id da categoria não for informado, se ela não for encontrada ou se houver algum erro de validação</response>
+        </member>
+        <member name="M:Estoque.Api.Controllers.ProdutoController.BuscarPorId(System.Int32)">
+             <summary>
+             Buscar produto por ID.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /Produto/1
+            
+             </remarks>
+             <param name="id"></param>
+             <returns>Retorna em "dados" o produto solicitado</returns>
+             <response code="200">Retorna o produto solicitado</response>
+             <response code="400">Se nenhumo produto for encontrado</response> 
+        </member>
+        <member name="M:Estoque.Api.Controllers.ProdutoController.BuscarTodas">
+             <summary>
+             Buscar todos.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 GET /Produto/
+            
+             </remarks>
+             <returns>Retorna em "dados" uma lista dos produtos.</returns>
+             <response code="200">Retornar a lista dos produtos</response>
+        </member>
+        <member name="M:Estoque.Api.Controllers.ProdutoController.Inserir(Estoque.Api.Models.ProdutoView)">
+             <summary>
+             Inserir produto.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /Produto/
+                 {
+                    "descricao": "TV 42'",
+                    "tipo": "revenda",
+                    "categoriaid": 1,
+                    "status": "ativo"
+                 }
+                 
+             </remarks>
+             <param name="produtoView"></param>
+             <returns>Retorna em "dados" o produto inserido.</returns>
+             <response code="200">Retorna o produto inserido</response>
+             <response code="400">Se o produto não for informado ou se houver algum erro de validação</response>
+        </member>
+        <member name="M:Estoque.Api.Controllers.ProdutoController.Alterar(System.Int32,Estoque.Api.Models.ProdutoView)">
+             <summary>
+             Alterar produto.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 PUT /Produto/1
+                 {
+                    "descricao": "TV 42' LG SMART",
+                    "tipo": "revenda",
+                    "categoriaid": 1,
+                    "status": "ativo"
+                 }
+                 
+             </remarks>
+             <param name="id"></param>
+             <param name="produtoView"></param>
+             <returns>Retorna em "dados" o produto alterado.</returns>
+             <response code="200">Retorna o produto alterado</response>
+             <response code="400">Se o id do produto não for informado, se ele não for encontrado ou se houver algum erro de validação</response>
+        </member>
+        <member name="M:Estoque.Api.Controllers.ProdutoController.Excluir(System.Int32)">
+             <summary>
+             Excluir produto.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 DELETE /Produto/1
+                 
+             </remarks>
+             <param name="id"></param>
+             <returns>Retorna em "dados" o produto excluído.</returns>
+             <response code="200">Retorna o produto excluído</response>
+             <response code="400">Se o id do produto não for informado, se ele não for encontrado ou se houver algum erro de validação</response>
+        </member>
+    </members>
+</doc>

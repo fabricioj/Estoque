@@ -1,0 +1,68 @@
+﻿@using Estoque.Negocio.Dominios;
+@using Estoque.App.Utilities;
+@model Estoque.App.Models.CategoriaView
+
+@{
+    ViewData["Title"] = "Categoria";
+    Operacao operacao = ViewBag.Operacao;
+}
+<div class="card bg-transparent border-0 h-100">
+    <div class="card-header bg-transparent border-0"><h1>@ViewData["Title"]</h1></div>
+    <div class="card-body py-2">
+        <form method="post" asp-action="Form" asp-route-operacao="@operacao" asp-antiforgery="true">
+            <div class="card p-0 shadow">
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-2">
+                            <label asp-for="Id" class="control-label"></label>
+                            <input asp-for="Id" class="form-control" readonly-when="true" />
+                            <span asp-validation-for="Id" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label asp-for="Descricao" class="control-label"></label>
+                            <input asp-for="Descricao" class="form-control" readonly-when="@(operacao== Operacao.Details || operacao == Operacao.Delete)" />
+                            <span asp-validation-for="Descricao" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Status" class="control-label"></label>
+                            <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<TipoStatus>()" readonly-when="@(operacao== Operacao.Details || operacao == Operacao.Delete)"></select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col"></div>
+                        @if (operacao != Operacao.Details)
+                        {
+                            <div class="col-sm col-md-3 col-lg-2">
+                                @if (operacao == Operacao.Delete)
+                                {
+                                    <button type="submit" class="btn btn-block btn-danger">Excluir</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-block btn-primary">Confirmar</button>
+                                }
+                            </div>
+                        }
+                        <div class="col-sm col-md-3 col-lg-2">
+                            <a asp-action="Index" class="btn btn-block btn-secondary">Fechar</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#@Html.IdFor(m => m.Id)').focus();
+        });
+    </script>
+}

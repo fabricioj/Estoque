@@ -1,0 +1,16 @@
+﻿.estoque-column-action {
+    white-space: nowrap;
+    width: 1%;
+    text-align:center;
+}
+
+#estoque-corpo {
+    height: 100vh;
+    padding-top: 65px;
+    padding-bottom: 60px;
+}
+
+select[readonly] {
+    pointer-events: none;
+    touch-action: none;
+}
