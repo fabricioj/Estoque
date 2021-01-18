@@ -22,7 +22,15 @@ namespace Estoque.App.Controllers
         //GET: Categoria
         public async Task<IActionResult> Index()
         {
-            var categorias = await _EstoqueApi.CategoriaBuscar();
+            ApiResposta<IEnumerable<CategoriaView>> categorias = new ApiResposta<IEnumerable<CategoriaView>>();
+            try
+            {
+                categorias = await _EstoqueApi.CategoriaBuscar();
+            }
+            catch (Exception ex)
+            {
+                RetornarMensagem("Falha durante a comunicação com a API");
+            }
             return View(categorias.dados);
         }
 
@@ -37,8 +45,16 @@ namespace Estoque.App.Controllers
         //GET: Categoria/Details
         public async Task<IActionResult> Details(int id)
         {
-            var apiRetorno = await _EstoqueApi.CategoriaBuscarPorId(id);
-            RetornarModelStateMensagens(apiRetorno.mensagens);
+            ApiResposta<CategoriaView> apiRetorno = new ApiResposta<CategoriaView>();
+            try
+            {
+                apiRetorno = await _EstoqueApi.CategoriaBuscarPorId(id);
+                RetornarModelStateMensagens(apiRetorno.mensagens);
+            }
+            catch (Exception ex)
+            {
+                RetornarMensagem("Falha durante a comunicação com a API");
+            }
 
             return _RetornarForm(Operacao.Details, apiRetorno.dados);
         }
@@ -46,8 +62,16 @@ namespace Estoque.App.Controllers
         //GET: Categoria/Edit
         public async Task<IActionResult> Edit(int id)
         {
-            var apiRetorno = await _EstoqueApi.CategoriaBuscarPorId(id);
-            RetornarModelStateMensagens(apiRetorno.mensagens);
+            ApiResposta<CategoriaView> apiRetorno = new ApiResposta<CategoriaView>();
+            try
+            {
+                apiRetorno = await _EstoqueApi.CategoriaBuscarPorId(id);
+                RetornarModelStateMensagens(apiRetorno.mensagens);
+            }
+            catch (Exception ex)
+            {
+                RetornarMensagem("Falha durante a comunicação com a API");
+            }
 
             return _RetornarForm(Operacao.Edit, apiRetorno.dados);
         }
@@ -55,8 +79,17 @@ namespace Estoque.App.Controllers
         //GET: Categoria/Delete
         public async Task<IActionResult> Delete(int id)
         {
-            var apiRetorno = await _EstoqueApi.CategoriaBuscarPorId(id);
-            RetornarModelStateMensagens(apiRetorno.mensagens);
+            ApiResposta<CategoriaView> apiRetorno = new ApiResposta<CategoriaView>();
+
+            try
+            {
+                apiRetorno = await _EstoqueApi.CategoriaBuscarPorId(id);
+                RetornarModelStateMensagens(apiRetorno.mensagens);
+            }
+            catch (Exception ex)
+            {
+                RetornarMensagem("Falha durante a comunicação com a API");
+            }
 
             return _RetornarForm(Operacao.Delete, apiRetorno.dados);
         }
@@ -75,19 +108,27 @@ namespace Estoque.App.Controllers
 
             if (ModelState.IsValid)
             {
-                ApiResposta<CategoriaView> apiRetorno = null;
-                if (operacaoAux == Operacao.Create)
+                ApiResposta<CategoriaView> apiRetorno = new ApiResposta<CategoriaView>();
+
+                try
                 {
-                    apiRetorno = await _EstoqueApi.CategoriaInserir(categoria);
+                    if (operacaoAux == Operacao.Create)
+                    {
+                        apiRetorno = await _EstoqueApi.CategoriaInserir(categoria);
+                    }
+                    else if (operacaoAux == Operacao.Edit)
+                    {
+                        apiRetorno = await _EstoqueApi.CategoriaAlterar(categoria.Id, categoria);
+                    }
+                    else if (operacaoAux == Operacao.Delete)
+                    {
+                        apiRetorno = await _EstoqueApi.CategoriaExcluir(categoria.Id);
+                    }
                 }
-                else if(operacaoAux == Operacao.Edit)
+                catch (Exception ex)
                 {
-                    apiRetorno = await _EstoqueApi.CategoriaAlterar(categoria.Id, categoria);
-                }
-                else if (operacaoAux == Operacao.Delete)
-                {
-                    apiRetorno = await _EstoqueApi.CategoriaExcluir(categoria.Id);
-                }
+                    RetornarMensagem("Falha durante a comunicação com a API");
+                }                
 
                 if (apiRetorno.sucesso)
                 {
@@ -104,7 +145,16 @@ namespace Estoque.App.Controllers
         //GET: Categoria/Buscar
         public async Task<IActionResult> Buscar(string pesquisa)
         {
-            var categorias = await _EstoqueApi.CategoriaBuscar(pesquisa);
+            ApiResposta<IEnumerable<CategoriaView>> categorias = new ApiResposta<IEnumerable<CategoriaView>>();
+            try
+            {
+                categorias = await _EstoqueApi.CategoriaBuscar(pesquisa);
+            }
+            catch (Exception ex)
+            {
+                RetornarMensagem("Falha durante a comunicação com a API");
+            }
+
             return Json(categorias.dados);
         }
 

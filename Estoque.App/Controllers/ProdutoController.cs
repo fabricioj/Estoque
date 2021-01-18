@@ -22,7 +22,17 @@ namespace Estoque.App.Controllers
         //GET: Produto
         public async Task<IActionResult> Index()
         {
-            var produtos = await _EstoqueApi.ProdutoBuscarTodos();
+            ApiResposta<IEnumerable<ProdutoView>> produtos = new ApiResposta<IEnumerable<ProdutoView>>();
+
+            try
+            {
+                produtos = await _EstoqueApi.ProdutoBuscarTodos();
+            }
+            catch (Exception ex)
+            {
+                RetornarMensagem("Falha durante a comunicação com a API");
+            }
+            
             return View(produtos.dados);
         }
 
@@ -38,8 +48,17 @@ namespace Estoque.App.Controllers
         //GET: Produto/Details
         public async Task<IActionResult> Details(int id)
         {
-            var apiRetorno = await _EstoqueApi.ProdutoBuscarPorId(id);
-            RetornarModelStateMensagens(apiRetorno.mensagens);
+            ApiResposta<ProdutoView> apiRetorno = new ApiResposta<ProdutoView>();
+
+            try
+            {
+                apiRetorno = await _EstoqueApi.ProdutoBuscarPorId(id);
+                RetornarModelStateMensagens(apiRetorno.mensagens);
+            }
+            catch (Exception ex)
+            {
+                RetornarMensagem("Falha durante a comunicação com a API");
+            }            
 
             return _RetornarForm(Operacao.Details, apiRetorno.dados);
         }
@@ -47,8 +66,17 @@ namespace Estoque.App.Controllers
         //GET: Produto/Edit
         public async Task<IActionResult> Edit(int id)
         {
-            var apiRetorno = await _EstoqueApi.ProdutoBuscarPorId(id);
-            RetornarModelStateMensagens(apiRetorno.mensagens);
+            ApiResposta<ProdutoView> apiRetorno = new ApiResposta<ProdutoView>();
+
+            try
+            {
+                apiRetorno = await _EstoqueApi.ProdutoBuscarPorId(id);
+                RetornarModelStateMensagens(apiRetorno.mensagens);
+            }
+            catch (Exception ex)
+            {
+                RetornarMensagem("Falha durante a comunicação com a API");
+            }
 
             return _RetornarForm(Operacao.Edit, apiRetorno.dados);
         }
@@ -56,15 +84,24 @@ namespace Estoque.App.Controllers
         //GET: Produto/Delete
         public async Task<IActionResult> Delete(int id)
         {
-            var apiRetorno = await _EstoqueApi.ProdutoBuscarPorId(id);
-            RetornarModelStateMensagens(apiRetorno.mensagens);
+            ApiResposta<ProdutoView> apiRetorno = new ApiResposta<ProdutoView>();
+
+            try
+            {
+                apiRetorno = await _EstoqueApi.ProdutoBuscarPorId(id);
+                RetornarModelStateMensagens(apiRetorno.mensagens);
+            }
+            catch (Exception ex)
+            {
+                RetornarMensagem("Falha durante a comunicação com a API");
+            }
 
             return _RetornarForm(Operacao.Delete, apiRetorno.dados);
         }
 
         //POST: Produto/Form
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Form(string operacao, [FromForm]ProdutoView produto)
+        public async Task<IActionResult> Form(string operacao, [FromForm] ProdutoView produto)
         {
             Enum.TryParse(operacao, out Operacao operacaoAux);
 
@@ -76,18 +113,26 @@ namespace Estoque.App.Controllers
 
             if (ModelState.IsValid)
             {
-                ApiResposta<ProdutoView> apiRetorno = null;
-                if (operacaoAux == Operacao.Create)
+                ApiResposta<ProdutoView> apiRetorno = new ApiResposta<ProdutoView>();
+
+                try
                 {
-                    apiRetorno = await _EstoqueApi.ProdutoInserir(produto);
+                    if (operacaoAux == Operacao.Create)
+                    {
+                        apiRetorno = await _EstoqueApi.ProdutoInserir(produto);
+                    }
+                    else if (operacaoAux == Operacao.Edit)
+                    {
+                        apiRetorno = await _EstoqueApi.ProdutoAlterar(produto.Id, produto);
+                    }
+                    else if (operacaoAux == Operacao.Delete)
+                    {
+                        apiRetorno = await _EstoqueApi.ProdutoExcluir(produto.Id);
+                    }
                 }
-                else if(operacaoAux == Operacao.Edit)
+                catch (Exception ex)
                 {
-                    apiRetorno = await _EstoqueApi.ProdutoAlterar(produto.Id, produto);
-                }
-                else if (operacaoAux == Operacao.Delete)
-                {
-                    apiRetorno = await _EstoqueApi.ProdutoExcluir(produto.Id);
+                    RetornarMensagem("Falha durante a comunicação com a API");
                 }
 
                 if (apiRetorno.sucesso)
