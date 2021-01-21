@@ -1,4 +1,5 @@
-﻿using Estoque.Negocio.Utilidades;
+﻿using Estoque.Negocio.Interfaces;
+using Estoque.Negocio.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,13 @@ using System.Text;
 
 namespace Estoque.Negocio.Repositorios
 {
-    public class PrincipalRepositorio<TSource>
+    public abstract class PrincipalRepositorio<TSource>
     {
-        protected readonly IRepositorio<TSource> Repositorio;
+        protected readonly IBDRepositorio<TSource> Repositorio;
         protected readonly ITransacao Transacao;
         protected readonly List<Mensagem> Mensagens;
 
-        public PrincipalRepositorio(IRepositorio<TSource> repositorio, ITransacao transacao)
+        public PrincipalRepositorio(IBDRepositorio<TSource> repositorio, ITransacao transacao)
         {
             Repositorio = repositorio;
             Transacao = transacao;

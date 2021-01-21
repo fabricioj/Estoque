@@ -3,6 +3,7 @@ using Estoque.Api.Models;
 using Estoque.Dados.Repositorios;
 using Estoque.Dados.Utilidades;
 using Estoque.Negocio.Entidades;
+using Estoque.Negocio.Interfaces;
 using Estoque.Negocio.Repositorios;
 using Estoque.Negocio.Utilidades;
 using Microsoft.AspNetCore.Builder;
@@ -50,7 +51,7 @@ namespace Estoque.Api.Utilities
             });
 
             services.AddTransient<ITransacao, Transacao>();
-            services.AddTransient(typeof(IRepositorio<>), typeof(Repositorio<>));
+            services.AddTransient(typeof(IBDRepositorio<>), typeof(BDRepositorio<>));
             services.AddTransient<ICategoriaRepositorio, CategoriaRepositorio>();
             services.AddTransient<IProdutoRepositorio, ProdutoRepositorio>();
 

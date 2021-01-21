@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Estoque.Api.Models;
 using Estoque.Negocio.Entidades;
+using Estoque.Negocio.Interfaces;
 using Estoque.Negocio.Repositorios;
 using Estoque.Negocio.Utilidades;
 using Microsoft.AspNetCore.Http;

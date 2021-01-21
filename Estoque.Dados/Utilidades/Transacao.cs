@@ -1,5 +1,5 @@
-﻿using Estoque.Negocio.Utilidades;
-using MySql.Data.MySqlClient;
+﻿using Estoque.Negocio.Interfaces;
+using Estoque.Negocio.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.Text;

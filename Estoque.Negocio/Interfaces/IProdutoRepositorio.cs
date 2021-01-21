@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Estoque.Negocio.Repositorios
+namespace Estoque.Negocio.Interfaces
 {
     public interface IProdutoRepositorio: IRepositorio<Produto>
     {

@@ -1,4 +1,5 @@
 ﻿using Estoque.Negocio.Entidades;
+using Estoque.Negocio.Interfaces;
 using Estoque.Negocio.Utilidades;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,14 @@ namespace Estoque.Negocio.Repositorios
 {
     public class CategoriaRepositorio : PrincipalRepositorio<Categoria>, ICategoriaRepositorio
     {
-        public CategoriaRepositorio(IRepositorio<Categoria> repositorio, ITransacao transacao) : base(repositorio, transacao)
+        public CategoriaRepositorio(IBDRepositorio<Categoria> repositorio, ITransacao transacao) : base(repositorio, transacao)
         {
 
         }
 
         public Categoria BuscarPorId(int id, bool referenciado)
         {
-            var query = IniciarConsulta(referenciado, filters: PrepararFiltros(c => c.Id == id));
+            var query = Repositorio.IniciarConsulta(referenciado, filters: PrepararFiltros(c => c.Id == id));
             var categoria = query.FirstOrDefault();
 
             return categoria;
@@ -28,7 +29,7 @@ namespace Estoque.Negocio.Repositorios
         {
             int.TryParse(pesquisa, out int pesquisaId);
             
-            var query = IniciarConsulta(filters: PrepararFiltros((c) => string.IsNullOrEmpty(pesquisa) || c.Id == pesquisaId || c.Descricao.ToUpper().StartsWith(pesquisa.ToUpper())));
+            var query = Repositorio.IniciarConsulta(filters: PrepararFiltros((c) => string.IsNullOrEmpty(pesquisa) || c.Id == pesquisaId || c.Descricao.ToUpper().StartsWith(pesquisa.ToUpper())));
             return query.AsEnumerable();
         }
 
@@ -107,11 +108,6 @@ namespace Estoque.Negocio.Repositorios
             }
 
             return Mensagens;
-        }
-
-        public IQueryable<Categoria> IniciarConsulta(bool referenciado = false, IEnumerable<Expression<Func<Categoria, object>>> includes = default, IEnumerable<Expression<Func<Categoria, bool>>> filters = default, Func<IQueryable<Categoria>, IOrderedQueryable<Categoria>> orderBy = default)
-        {
-            return Repositorio.IniciarConsulta(referenciado, includes, filters, orderBy);
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Estoque.Negocio.Utilidades;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Estoque.Negocio.Utilidades
+namespace Estoque.Negocio.Interfaces
 {
     public interface ITransacao
     {

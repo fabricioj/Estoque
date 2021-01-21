@@ -1,4 +1,5 @@
 ﻿using Estoque.Dados.Utilidades;
+using Estoque.Negocio.Interfaces;
 using Estoque.Negocio.Repositorios;
 using Estoque.Negocio.Utilidades;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace Estoque.Dados.Repositorios
 {
-    public class Repositorio<TSource> : IRepositorio<TSource> where TSource : class
+    public class BDRepositorio<TSource> : IBDRepositorio<TSource> where TSource : class
     {
         private readonly EstoqueContext _EstoqueContext;
-        public Repositorio(EstoqueContext estoqueContext)
+        public BDRepositorio(EstoqueContext estoqueContext)
         {
             _EstoqueContext = estoqueContext;
         }

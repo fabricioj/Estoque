@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Estoque.Negocio.Repositorios
+namespace Estoque.Negocio.Interfaces
 {
     public interface ICategoriaRepositorio: IRepositorio<Categoria>
     {

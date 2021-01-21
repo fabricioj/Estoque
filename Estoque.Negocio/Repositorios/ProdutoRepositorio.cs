@@ -1,5 +1,6 @@
 ﻿using Estoque.Negocio.Dominios;
 using Estoque.Negocio.Entidades;
+using Estoque.Negocio.Interfaces;
 using Estoque.Negocio.Utilidades;
 using System;
 using System.Collections.Generic;
@@ -14,14 +15,14 @@ namespace Estoque.Negocio.Repositorios
     {
         private ICategoriaRepositorio _RepositorioCategoria;
 
-        public ProdutoRepositorio(IRepositorio<Produto> repositorio, ITransacao transacao, ICategoriaRepositorio repositorioCategoria) : base(repositorio, transacao)
+        public ProdutoRepositorio(IBDRepositorio<Produto> repositorio, ITransacao transacao, ICategoriaRepositorio repositorioCategoria) : base(repositorio, transacao)
         {
             _RepositorioCategoria = repositorioCategoria;
         }
 
         public Produto BuscarPorId(int id, bool referenciado)
         {
-            var query = IniciarConsulta(false, includes: PrepararInclusoes((prod) => prod.Categoria),
+            var query = Repositorio.IniciarConsulta(false, includes: PrepararInclusoes((prod) => prod.Categoria),
                                                filters: PrepararFiltros((prod) => prod.Id == id));
             var produto = query.FirstOrDefault();
 
@@ -30,7 +31,7 @@ namespace Estoque.Negocio.Repositorios
 
         public IEnumerable<Produto> BuscarTodos(bool trazerCategoria)
         {
-            var query = IniciarConsulta(false, includes: !trazerCategoria ? default : PrepararInclusoes((prod) => prod.Categoria));
+            var query = Repositorio.IniciarConsulta(false, includes: !trazerCategoria ? default : PrepararInclusoes((prod) => prod.Categoria));
             return query.AsEnumerable();
         }
 
@@ -122,11 +123,6 @@ namespace Estoque.Negocio.Repositorios
             }
 
             return Mensagens;
-        }
-
-        public IQueryable<Produto> IniciarConsulta(bool referenciado = false, IEnumerable<Expression<Func<Produto, object>>> includes = default, IEnumerable<Expression<Func<Produto, bool>>> filters = default, Func<IQueryable<Produto>, IOrderedQueryable<Produto>> orderBy = default)
-        {
-            return Repositorio.IniciarConsulta(referenciado, includes, filters, orderBy);
         }
 
         private void ValidarCategoria(Produto produto)
