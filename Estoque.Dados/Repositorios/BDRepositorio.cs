@@ -97,26 +97,5 @@ namespace Estoque.Dados.Repositorios
 
             return query;
         }
-
-        public async Task<IEnumerable<TSource>> GetAsync(Expression<Func<TSource, bool>> filter = null, Func<IQueryable<TSource>, IOrderedQueryable<TSource>> orderBy = null, params Expression<Func<TSource, object>>[] includes)
-        {
-            IQueryable<TSource> query = _EstoqueContext.Set<TSource>();
-            foreach (Expression<Func<TSource, object>> include in includes)
-            {
-                query = query.Include(include);
-            }
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
-
-            return await query.ToListAsync().ConfigureAwait(false);
-        }
     }
 }
